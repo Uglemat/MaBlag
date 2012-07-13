@@ -38,9 +38,6 @@ def teardown_request(exception):
     g.db.close()
 
 def query_db(query, args=(), one=False,renderbbcode=True):
-    print query
-    print args
-    print
     """Queries the database and returns a list of dictionaries."""
     cur = g.db.execute(query, args)
     rv = [dict((cur.description[idx][0], value)
