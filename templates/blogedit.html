@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %} - Edit Blog{% endblock %}
+{% block addstuff %}
+<script src="{{ url_for('static',filename='editor.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='jscolor/jscolor.js') }}"></script>
+{% endblock  %}
+
+{% block content %}
+
+<h2 class="whatisthis">{% block whatisthis %}Edit Blog{% endblock %}</h2>
+
+{% if preview == "1" %}
+<h2>Preview:</h2>
+<div class="blogpost previewblog">
+{% block previewtitle %}<div class="title"><h2><a>{{ title }}</a></h2></div>
+{% endblock %}
+<div class="blogtext previewtext"><p> {{ renderedblog|safe }} </p></div>
+</div>
+{% endif %}
+
+<form id="addblogform" method="post" action="{% block submitaction %}
+{{ url_for('blogedit',blogid=blogid) }}
+{% endblock %}">
+{% block titleinput %}<h5>Title:</h5>
+<input name="title" type="text" value="{% if recover %}
+{{ title }}
+{% else %}
+{{ g.blog.title }}
+{% endif %}"/>
+{% endblock %}
+{% block maybemargin %}{% endblock %}
+<h5>{% block blogheader %}Blogpost:{% endblock %}</h5>
+
+<div class="colorpicker">
+Color picker: <input style="width:90px"; type="text" class="color {hash:true,pickerMode:'HVS',pickerPosition:'top'}">
+</div>
+
+<div class="bbstuff">
+<input type="button" name="bold" value="B" onclick="javascript:addtag('contentArea','bold');">
+<input type="button" name="italic" value="I" onclick="javascript:addtag('contentArea','italic');">
+<input type="button" name="uline" value="U" onclick="javascript:addtag('contentArea','underline');">
+<input type="button" name="strikethrough" value="S" onclick="javascript:addtag('contentArea','strikethrough');">
+<input type="button" name="url" value="URL" onclick="javascript:addtag('contentArea','url');">
+<input type="button" name="img" value="IMG" onclick="javascript:addtag('contentArea','img');">
+<input type="button" name="color" value="Color" onclick="javascript:addtag('contentArea','color');">
+<input type="button" name="youtube" value="Youtube" onclick="javascript:addtag('contentArea','youtube');">
+<input type="button" name="list" value="List" onclick="javascript:addtag('contentArea','list');">
+<input type="button" name="size" value="Size" onclick="javascript:addtag('contentArea','size');">
+
+</div>
+
+<textarea id="contentArea" name="blogpost" cols="100" rows="20">{% block recoveredtext %}{% if recover %}{{ blogpost }}{% else %}{{ g.blog.text }}{% endif %}{% endblock %}</textarea><br>
+
+<input name="submit" type="submit" value="Submit {% block blogorabout %}Blog{% endblock %}" />
+<input name="preview" type="submit" value="Preview {% block blogorabout2 %}Blog{% endblock %}" />
+{% block newbuttons %}{% endblock %}
+</form>
+
+{% block examples %}{% include "examples.html" %}{% endblock %}
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %} - Comment{% endblock %}
+{% block content %}
+<h2 class="whatisthis">Comment</h2>
+<br />
+<br/>
+{% if g.comment['removed'] == 0 or 'logged_in' in session %}
+
+<div class="commentsby_whichblogpost">
+<span class="subtle">Comment from </span>{% if g.comment['isblogremoved'] %}
+<span class="removed_blogtitle" title="Blogpost Id: {{ g.comment['commentpage'] }}">{{ g.comment['blogtitle'] }} </span><span class="subtle">[Removed]</span>
+{% else %}
+<a title="Blogpost Id: {{ g.comment['commentpage'] }}" href="{{ url_for('blogpost',blogid=g.comment['commentpage']) }}">{{ g.comment['blogtitle'] }}</a>{% endif %}<span class="subtle">:</span></div>
+
+<div class="complete_comment{% if g.comment['removed'] %} removedcomment{% endif %}">
+  {% if g.comment['email'] and (g.comment['publicemail'] or 'logged_in' in session) %}
+  <h4 class="nickname"><a href="mailto:{{ g.comment['email'] }}">{% if g.comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ g.comment['nickname'] }}</span>{% else %}
+{{ g.comment['nickname'] }}{% endif %}</a></h4>
+  {% else %}
+  <h4 class="nickname">{% if g.comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ g.comment['nickname'] }}</span>{% else %}
+{{ g.comment['nickname'] }}{% endif %}</h4>
+  {% endif %}
+  {% if g.comment['website'] %}
+  <a href="http://{{ g.comment['website'] }}">Website</a>
+  {% endif %}
+  <span class="subtle time">{{ g.comment['unixtime'] }}</span>
+  {% if 'logged_in' in session %}
+<a class="subtle ipaddress" href="{{ url_for('comments_by',ipaddress=g.comment['ip']) }}">{{ g.comment['ip'] }}</a>
+  {% if not g.comment['removed'] %}
+  <a class="delete" href="{{ url_for('delete',what='comment',whatid=g.comment['id'],returnto_ip=g.comment['ip']) }}">Delete comment</a>
+  {% else %}
+  <a class="delete" href="{{ url_for('recover',what='comment',whatid=g.comment['id'],returnto_ip=g.comment['ip']) }}">Recover comment</a>
+  {% endif %}
+
+
+{% endif %}
+  <div class="just_the_comment">{{ g.comment['commenttext'] }}</div>
+</div>
+{% else %}
+<p id="nocomments" class="subtle">
+This comment has been deleted or has never existed.
+</p>
+{% endif %}
+
+{% endblock %}
+

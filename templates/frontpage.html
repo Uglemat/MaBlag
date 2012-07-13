@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %} - Frontpage{% endblock %}
+{% block content %}
+
+
+<h2 class="whatisthis">Frontpage</h2>
+
+<div id="blogs">
+
+{% if g.blogs %}
+{% for blogpost in g.blogs %}
+
+<div class="blogpost">
+<div class="title"><h2><a href="{{ url_for('blogpost',blogid=blogpost.id) }}">{{ blogpost.title }}</a></h2></div>
+
+  {% if 'logged_in' in session %}
+  <a class="subtle adminoption edit_blogpost" href="{{ url_for('blogedit',blogid=blogpost.id) }}">Edit blogpost</a>
+  <a class="subtle adminoption manage_comments" href="{{ url_for('comments_for',blogpost=blogpost.id) }}">Manage comments</a>
+  <a class="subtle adminoption delete" href="{{ url_for('delete',what='blogpost',whatid=blogpost.id) }}">Remove blogpost</a>
+  {% endif  %}
+  <span class="subtle time post_time">{{ blogpost.unixtime }}</span>
+<div class="blogtext"><p> {{ blogpost.text|safe }} </p></div>
+</div>
+
+<a class="commentamount subtle" href="{{ url_for('blogpost',blogid=blogpost.id) }}#comments">
+Comments ({{ blogpost.comments }})
+</a>
+
+{% if blogpost.id != g.blogs[-1].id %}
+<hr />
+{% endif %}
+
+{% endfor %}
+{% else %}
+<p class="subtle noblogs">There are no blogpost yet for this blog.</p>
+{% endif %}
+<hr style="visibility:hidden;margin;-50" />
+</div>
+
+{% endblock %}

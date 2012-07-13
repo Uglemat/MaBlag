@@ -1,0 +1,22 @@
+{% extends "blogedit.html" %}
+
+{% block title %} - Edit About{% endblock %}
+
+{% block whatisthis %}Edit About{% endblock %}
+
+{% block previewtitle %}{% endblock %}
+
+{% block maybemargin %}<br /><br/>{% endblock %}
+
+{% block blogheader %}Aboutpage:{% endblock %}
+
+{% block submitaction %}{% endblock %}
+
+{% block titleinput %}{% endblock %}
+
+{% block recoveredtext %}{% if recover %}{{ blogpost }}{% else %}{{ g.orig_about }}{% endif %}{% endblock %}
+
+{% block blogorabout %}Aboutpage{% endblock %}
+{% block blogorabout2 %}Aboutpage{% endblock %}
+
+{% block examples %}{% include "examples.html" %}{% endblock %}

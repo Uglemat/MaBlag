@@ -1,0 +1,25 @@
+[center][size 32]Some sample bbcode[/size][/center]
+[color red]Postmarkup[/color] is easily customizable; existing tags can be disabled and new ones added.
+[list]
+[*] Thread-safe
+[*] Clean-markup
+[*] Handles overlapping tags
+e.g. [b]Bold [i]Bold and Italic[/b] Italic[/i]
+[*] Automatic links, e.g. http://www.willmcgugan.com/blog/tech/search/?s=postmarkup
+[*] Cosmetic replace for various characters: 'quotes' "Speech quotes" -- --- ... (c) (reg) (tm)
+[*] Syntax Highlighting code tag.
+e.g. 
+[code python]
+class DefaultTag(TagBase):	
+    def __init__(self, name, **kwargs):
+        TagBase.__init__(self,
+                         name,
+                         auto_close=True,
+                         inline=True,
+                         **kwargs)
+        				         
+    def render_open(self, parser, node_index):
+        return _escape(self.get_outer_contents(parser)) 
+[/code]
+[/list]
+

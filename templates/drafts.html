@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %} Drafts{% endblock %}
+
+{% block content %}
+
+<h2 class="whatisthis">Drafts</h2>
+
+<table class="drafttable">
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Last Edit</th>
+<!--<th>Edit</th>
+<th>Remove</th>!-->
+</tr>
+<tr>
+
+<form method="post" action="{{ url_for('adddraft') }}">
+<input name="title" type="hidden" value="" />
+<input name="blogpost" type="hidden" value="" />
+<input class="new_draft_button" type="submit" value="New draft" />
+</form>
+{% for draft in g.drafts %}
+<tr class="draft_entry">
+<td class="first_entry">{{ draft['id'] }}</td>
+<td class="draft_title">{{ draft['title'][:60] }}</td>
+<td class="center_text"><span class="draft_time">{{ draft['lastedit'] }}</span></td>
+<td class="center_text"><a href="{{ url_for('editdraft',draftid=draft['id']) }}">Edit</a></td>
+<td class="last_entry center_text"><a class="delete" href="{{ url_for('delete',what='draft',whatid=draft['id']) }}">Remove</a></td>
+</tr>
+{% endfor %}
+</table> 
+
+
+
+{% endblock %}

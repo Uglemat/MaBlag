@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %} - Comments For{% endblock %}
+{% block content %}
+<h2 class="whatisthis">Comments By</h2>
+
+<h3 id="comments" class="commentsbyheader">All Comments For <a href="
+{{ url_for('blogpost',blogid=g.blog[0]['id']) }}">{{ g.blog[0]['title'] }}</a>:</h3>
+
+<div id="commentsby_help" class="subtle">
+Darkened comments are deleted comments
+</div>
+
+{% for comment in g.comments %}
+<div class="complete_comment{% if comment['removed'] %} removedcomment{% endif %}">
+{% if comment['email'] %}
+<h4 class="nickname"><a href="mailto:{{ comment['email'] }}">{% if comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ comment['nickname'] }}</span>{% else %}
+{{ comment['nickname'] }}{% endif %}</a></h4>
+{% else %}
+<h4 class="nickname">{% if comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ comment['nickname'] }}</span>{% else %}
+{{ comment['nickname'] }}{% endif %}</h4>
+{% endif %}
+{% if comment['website'] %}
+<a href="http://{{ comment['website'] }}">Website</a>
+{% endif %}
+<span class="subtle time">{{ comment['unixtime'] }}</span>
+<a class="subtle comment_permalink" href="{{ url_for('comment',commentid=comment['id']) }}">Permalink</a>
+{% if 'logged_in' in session %}
+<a class="subtle ipaddress" href="{{ url_for('comments_by',ipaddress=comment['ip']) }}">{{ comment['ip'] }}</a>
+{% if not comment['removed'] %}
+<a class="delete" href="{{ url_for('delete',what='comment',whatid=comment['id'],returnto_manage_comments=g.blog[0]['id']) }}">Delete comment</a>
+{% else %}
+<a class="delete" href="{{ url_for('recover',what='comment',whatid=comment['id'],returnto_manage_comments=g.blog[0]['id']) }}">Recover comment</a>
+{% endif %}
+{% endif %}
+<div class="just_the_comment">{{ comment['commenttext'] }}</div>
+</div>
+{% else %}
+<p id="nocomments" class="subtle">
+<br />
+There are no comments for this blogpost.
+</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %} - Comments By{% endblock %}
+{% block content %}
+<h2 class="whatisthis">Comments By</h2>
+
+<h3 id="comments" class="commentsbyheader">Comments From {{ ipaddress }}:</h3>
+
+<div id="commentsby_help" class="subtle">
+Darkened comments are deleted comments
+</div>
+<br />
+{% for comment in g.comments %}
+<div class="commentsby_whichblogpost">
+<span class="subtle">Comment from </span>{% if comment['isblogremoved'] %}
+<span class="removed_blogtitle" title="Blogpost Id: {{ comment['commentpage'] }}">{{ comment['blogtitle'] }} </span><span class="subtle">[Removed]</span>
+{% else %}
+<a title="Blogpost Id: {{ comment['commentpage'] }}" href="{{ url_for('blogpost',blogid=comment['commentpage']) }}">{{ comment['blogtitle'] }}</a>{% endif %}<span class="subtle">:</span></div>
+<div class="complete_comment{% if comment['removed'] %} removedcomment{% endif %}">
+{% if comment['email'] %}
+<h4 class="nickname"><a href="mailto:{{ comment['email'] }}">{% if comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ comment['nickname'] }}</span>{% else %}
+{{ comment['nickname'] }}{% endif %}</a></h4>
+{% else %}
+<h4 class="nickname">{% if comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ comment['nickname'] }}</span>{% else %}
+{{ comment['nickname'] }}{% endif %}</h4>
+{% endif %}
+{% if comment['website'] %}
+<a href="http://{{ comment['website'] }}">Website</a>
+{% endif %}
+<span class="subtle time">{{ comment['unixtime'] }}</span>
+<a class="subtle comment_permalink" href="{{ url_for('comment',commentid=comment['id']) }}">Permalink</a>
+{% if 'logged_in' in session %}
+
+{% if not comment['removed'] %}
+<a class="delete" href="{{ url_for('delete',what='comment',whatid=comment['id'],returnto_ip=comment['ip']) }}">Delete comment</a>
+{% else %}
+<a class="delete" href="{{ url_for('recover',what='comment',whatid=comment['id'],returnto_ip=comment['ip']) }}">Recover comment</a>
+{% endif %}
+{% endif %}
+<div class="just_the_comment">{{ comment['commenttext'] }}</div>
+</div>
+{% else %}
+<p id="nocomments" class="subtle">
+There are no comments from this ip address.
+</p>
+{% endfor %}
+{% endblock %}

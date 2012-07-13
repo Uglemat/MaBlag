@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %} - {{ g.blog.title }}{% endblock %}
+{% block content %}
+<h2 class="whatisthis">Blogpost</h2>
+
+<div class="blogpost">
+  <div class="title"><h2>{{ g.blog.title }}</h2></div>
+  {% if 'logged_in' in session %}
+  <a class="subtle adminoption edit_blogpost" href="{{ url_for('blogedit',blogid=g.blog.id) }}">Edit blogpost</a>
+  <a class="subtle adminoption manage_comments" href="{{ url_for('comments_for',blogpost=g.blog.id) }}">Manage comments</a>
+  <a class="subtle adminoption delete" href="{{ url_for('delete',what='blogpost',whatid=g.blog.id) }}">Remove blogpost</a>
+  {% endif  %}
+  <span class="subtle time post_time">{{ g.blog.unixtime }}</span>
+
+<div class="blogtext"><p> {{ g.blog.text|safe }} </p></div>
+</div>
+
+<hr />
+<div class="comment_section">
+<h3 id="comments">Comments:</h3>
+{% for comment in g.comments %}
+
+<div class="complete_comment">
+{% if comment['email'] and (comment['publicemail'] or 'logged_in' in session) %}
+<h4 class="nickname"><a href="mailto:{{ comment['email'] }}">{% if comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ comment['nickname'] }}</span>{% else %}
+{{ comment['nickname'] }}{% endif %}</h4></a></h4>
+{% else %}
+<h4 class="nickname">{% if comment['isadmin'] %}
+<span class="admincomment" title="Administrator">{{ comment['nickname'] }}</span>{% else %}
+{{ comment['nickname'] }}{% endif %}</h4>
+{% endif %}
+{% if comment['website'] %}
+<a href="{{ comment['website'] }}">Website</a>
+{% endif %}
+<span class="subtle time">{{ comment['unixtime'] }}</span>
+<a class="subtle comment_permalink" href="{{ url_for('comment',commentid=comment['id']) }}">Permalink</a>
+{% if 'logged_in' in session %}
+<a class="subtle ipaddress" href="{{ url_for('comments_by',ipaddress=comment['ip']) }}">{{ comment['ip'] }}</a>
+<a class="delete" href="{{ url_for('delete',what='comment',whatid=comment['id']) }}">Delete comment</a>
+{% endif %}
+<div class="just_the_comment">{{ comment['commenttext'] }}</div>
+</div>
+{% else %}
+<p id="nocomments" class="subtle">
+There are no comments yet.
+</p>
+{% endfor %}
+
+
+<h3>Create comment:</h3>
+ <span class="subtle">(Only the Name and Comment field is required)</span>
+{% include "create_comment.html" %}
+</div>
+{% endblock %}
+

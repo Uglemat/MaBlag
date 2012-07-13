@@ -1,0 +1,56 @@
+<doctype! html>
+<html>
+  <head>
+    <title>Ma Blag{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}" />
+<link href='http://fonts.googleapis.com/css?family=Buenard' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{{ url_for('static',filename='jquery.js') }}"></script> 
+<script type="text/javascript" src="{{ url_for('static',filename='script.js') }}"></script>   
+{% block addstuff %}{% endblock %}
+  </head>
+<body>
+
+{% block header %}
+<div id="header">
+  <h1><a id="headerlink" href="{{ url_for('frontpage') }}">Ma Blag</a></h1>
+  <ul id="navbar">
+     <a href="{{ url_for('frontpage') }}"><li>Frontpage</li></a>
+     <a href="{{ url_for('about') }}"><li>About</li></a>
+ {% if session['logged_in'] %}
+    <a href="{{ url_for('drafts') }}"><li>Drafts</li></a>
+    <a href="{{ url_for('add_blog') }}"><li>Add Blog</li></a>
+    <a href="{{ url_for('logout') }}"><li>Log Out</li></a>
+{% else %}
+    <a href="{{ url_for('login') }}"><li>Admin Login</li></a>
+{% endif %}
+  </ul>
+</div>
+{% endblock %}
+
+<div id="flashes">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message|safe }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+</div>
+
+<div id="content">
+{% block content %}
+
+{% endblock %}
+</div>
+{% block footer %}
+<div id="footer">
+  <p id="copyright">footerstuff © or whatever</p>
+</div>
+{% endblock %}
+</body>
+
+</html>

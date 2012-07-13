@@ -1,0 +1,40 @@
+{% block addcomment %}
+
+<div id="addcomment">
+
+
+<form action="{{ url_for('commitcomment', blogid=g.blog.id)  }}" method="post">
+Name/Nickname<span class="subtle"> (Required)</span>:<br />
+<input type="text" name="nickname" value="{% if adminuser and 'logged_in' in session %}{{ adminuser }}
+{% endif %}{{ nickname }}" /><br />
+Website: <span class="subtle">You must have the protocol in the URL or it won't work! Example: "http://". (Not required)</span><br />
+<input type="text" name="website" value="{{ website }}" /><br />
+Email: <span class="subtle">Your email address (Not required)</span><br />
+<input type="text" name="email" value="{{ email }}" /><br />
+
+
+<input type="radio" class="ispublic" name="ispublic" value="nopublic" checked> Show the email only to the blog admin<br>
+<input type="radio" class="ispublic" name="ispublic" value="public"> Show the email to everyone that sees your comment <span class="subtle">This might be a bad idea</span><br>
+
+Comment<span class="subtle"> (Required)</span>:<br />
+<textarea rows="10" cols="80" name="comment">{% if comment %}{{ comment }}{% endif %}</textarea><br />
+
+{% if 'logged_in' not in session %}
+<div id="captcha">
+<div id="captchadiv">
+  <img id="captchaimage" height="90px" width="130px" src="http://captchator.com/captcha/image/{{ session['session_id'] }}" />
+</div>
+<div id="captcharefresh"><a><img src="{{ url_for('static',filename='refresh.png') }}" /></a></div>
+</div>
+<p class="areyouhuman">Are you human? Fill out the text in the image above.<span class="subtle"> (Required)</span></p>
+<input type="text" id="captchainput" autocomplete='off' name="captchaanswer" />
+<br />
+{% endif %}
+<input id="submitcomment" type="submit" value="Submit Comment">
+
+</form>
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %} - About{% endblock %}
+{% block content %}
+
+<h2 class="whatisthis">About</h2>
+
+
+
+<div class="title"><h2>About this blog</h2></div>
+
+{% if 'logged_in' in session %}
+<a class="subtle editabout" href="{{ url_for('editabout') }}" >Edit aboutpage</a>
+{% endif %}
+
+<div class="blogtext abouttext"><p> {{ g.about|safe }} </p></div>
+
+<div class="title"><h2 class="aboutsoftwareheader">About the software</h2></div>
+<div class="blogtext abouttext">
+<p>
+The software for this blog is created by Smart Viking, using these technologies:
+<ul class="techul">
+<li><a class="techlist" href="http://www.python.org/">Python</a> (<a class="techlist" href="http://flask.pocoo.org/">Flask</a>) <span class="subtle">For serverside programming</span></li>
+
+<li><a class="techlist" href="http://docs.python.org/library/sqlite3.html">Sqlite3</a> <span class="subtle">For database storage</span></li>
+
+<li><a class="techlist" href="http://code.google.com/p/postmarkup/">Postmarkup</a> <span class="subtle">For rendering bbcode</span></li>
+
+<li><a class="techlist" href="http://captchator.com/">Captchator</a> <span class="subtle">Captcha service</span></li>
+
+<li><a class="techlist" href="http://jscolor.com/">JSColor</a> <span class="subtle">The color picker for the blog editor</span></li>
+
+<li><a class="techlist" href="http://jquery.com/">jQuery</a> <span class="subtle">To simplify Javascript</span></li>
+
+<li><a class="techlist" href="http://code.google.com/p/sbbeditor/">sbbeditor</a> <span class="subtle">Buttons for inserting bbcode in textarea (Javascript)</span></li>
+
+</ul>
+More info/whatever:
+<ul class="techul">
+<li><a class="techlist" href="http://subtlepatterns.com/?p=902">White Plaster</a> <span class="subtle">This is the background texture. Courtesy of <a class="techlist" href="http://aurer.co.uk/">Phil Maurer</a>.</span></li>
+
+<li><a class="techlist" href="http://findicons.com/icon/219132/refresh?id=384765">Refresh Icon</a> <span class="subtle">The refresh icon for the captcha. Courtesy of <a class="techlist" href="http://www.small-icons.com/">Aha-Soft Team</a>.</span></li>
+
+</ul>
+
+</p></div>
+
+{% endblock %}

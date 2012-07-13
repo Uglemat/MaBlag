@@ -1,0 +1,11 @@
+<div style="text-align:center;"><span style="font-size:32px">Some sample bbcode</span></div><span style="color:red">Postmarkup</span> is easily customizable; existing tags can be disabled and new ones added.<br/><ul><li> Thread-safe<br/></li><li> Clean-markup<br/></li><li> Handles overlapping tags<br/>e.g. <strong>Bold <em>Bold and Italic</em></strong><em> Italic</em><br/></li><li> Automatic links, e.g. <a href="http://www.willmcgugan.com/blog/tech/search/?s=postmarkup">http://www.willmcgugan.com/blog/tech/search/?s=postmarkup</a><br/></li><li> Cosmetic replace for various characters: &lsquo;quotes&rsquo; &ldquo;Speech quotes&rdquo; &ndash; &mdash; &#8230; &copy; &reg; &trade;<br/></li><li> Syntax Highlighting code tag.<br/>e.g. <br/><div class="code"><pre><span class="k">class</span> <span class="nc">DefaultTag</span><span class="p">(</span><span class="n">TagBase</span><span class="p">):</span>	
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">TagBase</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                         <span class="n">name</span><span class="p">,</span>
+                         <span class="n">auto_close</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="n">inline</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        				         
+    <span class="k">def</span> <span class="nf">render_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">node_index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_escape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_outer_contents</span><span class="p">(</span><span class="n">parser</span><span class="p">))</span> 
+</pre></div></li></ul><br/>

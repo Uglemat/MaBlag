@@ -1,0 +1,148 @@
+<div class="showexamples"><h2 class="title showexlink">bbcode examples: </h2></div>
+
+<div class="entire_examples">
+
+<div class="examplelinks">
+<a href="#ex_cursive">Cursive</a> -
+<a href="#ex_bold">Bold</a> -
+<a href="#ex_underline">Underline</a> -
+<a href="#ex_strikethrough">Strikethrough</a> -
+<a href="#ex_several">Several at once</a> -
+<a href="#ex_link">Link</a> -
+<a href="#ex_link_withname">Link with name</a> -
+<a href="#ex_list">List</a> -
+<a href="#ex_largetext">Large text</a> -
+<a href="#ex_smalltext">Small text</a> -
+<a href="#ex_centered">Centered</a> -
+<a href="#ex_colored">Colored</a> -
+<a href="#ex_several2">Bold/centered/green text</a> -
+<a href="#ex_htmlcolors">Html colors</a> -
+<a href="#ex_quote">Quote</a> -
+<a href="#ex_image">Image</a> -
+<a href="#ex_floatimage">Float image</a> -
+<a href="#ex_orderedlist">Ordered list</a> -
+<a href="#ex_code">Code</a> -
+<a href="#ex_sitetags">Special site tags</a>
+<a href="#ex_html">HTML/embedding stuff</a>
+</div>
+
+<p>Remember that you can combine the tags in very many ways, but the following examples are useful for reference</p>
+
+<div class='full_example' id="ex_cursive">
+<div class='unrendered_example'>[i]This is cursive[/i]</div><hr />
+<div class='rendered_example'><em>This is cursive</em></div></div>
+
+<div class='full_example' id="ex_bold">
+<div class='unrendered_example'>[b]This is bold[/b]</div><hr />
+<div class='rendered_example'><strong>This is bold</strong></div></div>
+
+<div class='full_example' id="ex_underline">
+<div class='unrendered_example'>[u]This is underline[/u]</div><hr />
+<div class='rendered_example'><u>This is underline</u></div></div>
+
+<div class='full_example' id="ex_strikethrough">
+<div class='unrendered_example'>[s]This is strikethrough[/s]</div><hr />
+<div class='rendered_example'><strike>This is strikethrough</strike></div></div>
+
+<div class='full_example' id="ex_several">
+<div class='unrendered_example'>[i][b][u][s]This is all of the above[/s][/u][/b][/i]</div><hr />
+<div class='rendered_example'><em><strong><u><strike>This is all of the above</strike></u></strong></em></div></div>
+
+<div class='full_example' id="ex_link">
+<div class='unrendered_example'>[url]www.google.com[/url]</div><hr />
+<div class='rendered_example'><a href="http://www.google.com">www.google.com</a></div></div>
+
+<div class='full_example' id="ex_link_withname">
+<div class='unrendered_example'>[url=www.google.com]Link with a name[/url]</div><hr />
+<div class='rendered_example'><a href="http://www.google.com">Link with a name</a></div>
+
+</div><div class='full_example' id="ex_list">
+<div class='unrendered_example'>[list]<br />
+  [*]List item 1<br />
+  [*][b]List item 2[/b]<br />
+  [*][url=www.google.com]Link to google[/url]<br />
+[/list]</div><hr />
+<div class='rendered_example'><ul><li>List item 1<br/>  </li><li><strong>List item 2</strong><br/>  </li><li><a href="http://www.google.com">Link to google</a><br/></li></ul></div></div>
+
+<div class='full_example' id="ex_largetext">
+<div class='unrendered_example'>[size 40]Large text[/size]</div><hr />
+<div class='rendered_example'><span style="font-size:40px">Large text</span></div></div>
+
+<div class='full_example' id="ex_smalltext">
+<div class='unrendered_example'>[size 10]Small text[/size]</div><hr />
+<div class='rendered_example'><span style="font-size:10px">Small text</span></div></div>
+
+<div class='full_example' id="ex_centered">
+<div class='unrendered_example'>[center]Centered text[/center]</div><hr />
+<div class='rendered_example'><div style="text-align:center;">Centered text</div></div></div>
+
+<div class='full_example' id="ex_colored">
+<div class='unrendered_example'>[color orange]Orange text[/color]</div><hr />
+<div class='rendered_example'><span style="color:orange">Orange text</span></div></div>
+
+<div class='full_example' id="ex_several2">
+<div class='unrendered_example'>[color green][b][center]Bold centered green text[/center][/b][/color]</div><hr />
+<div class='rendered_example'><span style="color:green"></span><div style="text-align:center;"><span style="color:green"><strong>Bold centered green text</strong></span></div></div></div>
+
+<div class='full_example' id="ex_htmlcolors">
+<div class='unrendered_example'>[color #9900FE]You can also use html color to colorize text[/color]</div><hr />
+<div class='rendered_example'><span style="color:#9900fe">You can also use html color to colorize text</span></div></div>
+
+<div class='full_example' id="ex_quote">
+<div class='unrendered_example'>[quote]"This is a quote I guess"[/quote]</div><hr />
+<div class='rendered_example'><blockquote>&ldquo;This is a quote I guess&rdquo;</blockquote></div></div>
+
+<div class='full_example' id="ex_image">
+<div class='unrendered_example'>[color grey]Remember to link directly to an image (It must end with an image suffix, like .png, .jpeg, or any other image suffix. In this case, it is a .gif.)[/color]
+<br />[img]http://i.imgur.com/VuVlJ.gif[/img]</div><hr />
+<div class='rendered_example'><span style="color:grey">Remember to link directly to an image (It must end with an image suffix, like .png, .jpeg, or any other image suffix. In this case, it is a .gif.)</span><br/><img src="http://i.imgur.com/VuVlJ.gif"></img></div></div>
+
+<div class="full_example" style="height:460px;" id="ex_floatimage">
+<div class='unrendered_example'>[b]You can float images left or right, by wrapping a left or right tag around the image:[/b]<br />
+[right]<br />
+[img]http://www.bbcode.org/images/lubeck_small.jpg[/img]<br />
+[/right]</div><hr />
+<div class='rendered_example'><strong>You can float images left or right, by wrapping a left or right tag around the image:</strong><br/><div style="float:right;"><br/><img src="http://www.bbcode.org/images/lubeck_small.jpg"></img><br/></div></div></div>
+
+<div class='full_example' id="ex_orderedlist">
+<div class='unrendered_example'>
+[ol]<br />
+[li]This is how you create an ordered list[/il]<br />
+[li]Can be useful for making a receipt, for example.[/il]<br />
+[li]"li" stands for "list item", "ol" stands for "ordered list"[/li]<br />
+[/ol]
+</div><hr />
+<div class='rendered_example'><br/><ol><li>This is how you create an ordered list<br/></li><li>Can be useful for making a receipt, for example.<br/></li><li>&ldquo;li&rdquo; stands for &ldquo;list item&rdquo;, &ldquo;ol&rdquo; stands for &ldquo;ordered list&rdquo;<br/></li></ol></div></div>
+
+<div class='full_example' id="ex_code">
+<div class='unrendered_example'>
+[code]Sometimes it is useful to write inside code tags, to preserve whitespace better for example, 
+or to [i] use codes without using them [/i][/code]
+</div><hr />
+<div class='rendered_example'><br/><div class="code"><pre>Sometimes it is useful to write inside code tags, to preserve whitespace better for example, <br/>or to [i] use codes without using them [/i]</pre></div></div></div>
+
+
+<div class='full_example' id="ex_sitetags">
+<div class='unrendered_example'>
+There are some tags special for sites so you can save time, but they are a little limited:<br />
+[ol]<br />
+[*]Wikipedia article about heat (only english wikipedia): [wiki]heat[/wiki]<br />
+[*]A google search for hear: [google]heat[/google]<br />
+[*]A word in the dictionary at dictionary.reference.com: [dict]heat[/dict]<br />
+[*]Note that the wikipedia and dictionary tags will only work correctly if the websites have a page on the word. This for example, will not work: [wiki]blabla5h7[/wiki]<br />
+[/ol]
+</div><hr />
+<div class='rendered_example'><br/>There are some tags special for sites so you can save time, but they are a little limited:<br/><ol><li>Wikipedia article about heat (only english wikipedia): <a href="http://en.wikipedia.org/wiki/Special:Search?search=heat">heat</a><br/></li><li>A google search for hear: <a href="http://www.google.com/search?hl=en&amp;q=heat&amp;btnG=Google+Search">heat</a><br/></li><li>A word in the dictionary at dictionary.reference.com: <a href="http://dictionary.reference.com/browse/heat">heat</a><br/></li><li>Note that the wikipedia and dictionary tags will only work correctly if the websites have a page on the word. This for example, will not work: <a href="http://en.wikipedia.org/wiki/Special:Search?search=blabla5h7">blabla5h7</a><br/></li></ol></div></div>
+
+<div class='full_example' id="ex_html">
+<div class='unrendered_example'>Sometimes you'll need to use html directly. Like when embedding youtube videos. That's what the html tag is for <br />
+[html]<br />
+&lt;iframe width=&ldquo;640&rdquo; height=&ldquo;480&rdquo; src=&ldquo;http://www.youtube.com/embed/7XzDMlhk4Sw&rdquo; frameborder=&ldquo;0&rdquo; allowfullscreen&gt;&lt;/iframe&gt;<br />
+[/html]</div><hr />
+<div class='rendered_example'>
+Sometimes you'll need to use html directly. Like when embedding youtube videos. That's what the html tag is for <br />
+<iframe width="640" height="480" src="http://www.youtube.com/embed/7XzDMlhk4Sw" frameborder="0" allowfullscreen></iframe> </p></div>
+</div></div>
+
+</div>
+
