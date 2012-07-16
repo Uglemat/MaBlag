@@ -10,7 +10,8 @@ CREATE TABLE post (
        removed INTEGER NOT NULL,
        unixtime INTEGER NOT NULL,  -- Time of publication
        lastedit INTEGER,    	   -- Last edit, 0 if never edited
-       timeofremoval INTEGER
+       timeofremoval INTEGER,
+       views INTEGER NOT NULL      -- Views for the dedicated blog page.
 );
 CREATE TABLE draft (
        id INTEGER PRIMARY KEY AUTOINCREMENT,

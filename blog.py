@@ -52,12 +52,12 @@ def query_db(query, args=(), one=False,renderbbcode=True):
 @app.route('/')
 def frontpage():
     g.blogs = query_db("""
-  select post.*, count(comment.commentpage) as comments 
-  from post left outer join comment 
-  on comment.commentpage=post.id and comment.removed!=1
-    where post.removed!=1
-  group by post.id
-  order by post.id desc;
+  SELECT post.*, COUNT(comment.commentpage) AS comments 
+  FROM post LEFT OUTER JOIN comment 
+  ON comment.commentpage=post.id AND comment.removed!=1
+    WHERE post.removed!=1
+  GROUP BY post.id
+  ORDER BY post.id DESC;
   """)
     return render_template("frontpage.html")
 
@@ -100,7 +100,7 @@ def commitblog():
             return redirect(url_for('add_blog',title=title,blogpost=blogpost,recover=1))
         time_var = unixtime()
         g.db.execute("""
-INSERT INTO post (title, text, removed,unixtime) VALUES (?,?,0,?)
+INSERT INTO post (title, text, removed,unixtime,views) VALUES (?,?,0,?,0)
 """,(title,blogpost,time_var))
         g.db.commit()
         blogid = query_db("""SELECT id FROM post WHERE unixtime=?""",[time_var],True)['id']
@@ -130,13 +130,13 @@ def blogedit(blogid):
             return render_template('blogedit.html',blogid=blogid,title=title,blogpost=text,recover=1)
 
         g.db.execute("""
-update post set title=?, text=?, lastedit=? where id=?
+UPDATE post SET title=?, text=?, lastedit=? WHERE id=?
 """,(title,text,unixtime(),blogid))
         g.db.commit()
         flash("You successfully changed your blogpost","message")
         return redirect(url_for('blogpost',blogid=blogid))
     g.blog = query_db("""
-select * from post where id=?
+SELECT * FROM post WHERE id=?
 """, [str(blogid)], True,False)
     return render_template('blogedit.html',blogid=blogid)
 
@@ -162,30 +162,34 @@ def logout():
 @app.route('/about')
 def about():
     g.about = render_bbcode(query_db("""
-select text from about limit 1
+SELECT text FROM about LIMIT 1
 """,(),True)['text'])
     return render_template("about.html")
 
 @app.route('/blogpost/<int:blogid>')
 def blogpost(blogid):
-     g.blog = query_db("""
-select * from post where id=? and removed!=1
+    g.blog = query_db("""
+SELECT * FROM post WHERE id=? AND removed!=1
 """, [str(blogid)], True)
 
-     g.comments = query_db("""
-select * from comment where commentpage=? and removed=0 order by id desc
+    g.comments = query_db("""
+SELECT * FROM comment WHERE commentpage=? AND removed=0 ORDER BY id DESC
 """,[str(blogid)])
 
-     if g.blog == None:
-         abort(404)
-     if not request.args.get("recover") == "1":
-         return render_template('blogpost.html',blogid=blogid,adminuser=ADMINNAME)
-     else:
-         website  = request.args.get('website')
-         nickname = request.args.get('nickname')
-         comment  = request.args.get('comment')
-         email    = request.args.get('email')
-         return render_template('blogpost.html',blogid=blogid,website=website,nickname=nickname,comment=comment,email=email)
+    if g.blog == None:
+        abort(404)
+    if not request.args.get("recover") == "1":
+        g.db.execute("""
+UPDATE post SET views = (views + 1) WHERE id=?
+""",[str(blogid)])
+        g.db.commit()	
+        return render_template('blogpost.html',blogid=blogid,adminuser=ADMINNAME)
+    else:
+        website  = request.args.get('website')
+        nickname = request.args.get('nickname')
+        comment  = request.args.get('comment')
+        email    = request.args.get('email')
+        return render_template('blogpost.html',blogid=blogid,website=website,nickname=nickname,comment=comment,email=email)
 
 @app.route("/commitcomment/<int:blogid>",methods=["POST"])
 def commitcomment(blogid):
@@ -227,7 +231,8 @@ def commitcomment(blogid):
         if not error:
             flash("You made a comment!",'message')
             g.db.execute("""
-INSERT INTO comment (commentpage, commenttext,nickname,website,email,removed,unixtime,ip,publicemail,isadmin) VALUES (?,?,?,?,?,0,?,?,?,?)
+INSERT INTO comment (commentpage, commenttext,nickname,website,email,removed,unixtime,ip,publicemail,isadmin) 
+              VALUES(?,           ?,          ?,       ?,      ?,    0,      ?,       ?, ?,          ?)
 """,(blogid,comment,nickname,website,email,unixtime(),ip,ispublic,admin))
             g.db.commit()
     else:
@@ -247,17 +252,17 @@ def delete(what,whatid):
 
     if what == "blogpost":
         g.db.execute(""" 
-update post set removed=1, timeofremoval=? where id=?
+UPDATE post SET removed=1, timeofremoval=? WHERE id=?
 """,[unixtime(),whatid])
         g.db.commit()
         flash("The blogpost has been deleted <a class='undo_recover' href='"+ url_for("recover",what="blogpost",whatid=whatid) +"'>Undo deletion</a>","message")
         return redirect(url_for("frontpage"))
     elif what == "comment":
         commentpage = query_db("""
-select commentpage from comment where id=?
+SELECT commentpage FROM comment WHERE id=?
 """,[whatid])[0]["commentpage"]
         g.db.execute("""
-update comment set removed=1, timeofremoval=? where id=?
+UPDATE comment SET removed=1, timeofremoval=? WHERE id=?
 """,[unixtime(),whatid])
         g.db.commit()
 
@@ -273,7 +278,7 @@ update comment set removed=1, timeofremoval=? where id=?
     elif what == "draft":
         
         g.db.execute("""
-update draft set removed=1, timeofremoval=? where id=?
+UPDATE draft SET removed=1, timeofremoval=? WHERE id=?
 """,[unixtime(),whatid])
         g.db.commit()
         flash("The draft has been removed <a class='undo_recover' href='"+ url_for("recover",what="draft",whatid=whatid) +"'>Undo deletion</a>","message")
@@ -291,7 +296,7 @@ def recover(what,whatid):
 
     if what == "blogpost":
         g.db.execute("""
-update post set removed=0, timeofremoval=0 where id=?
+UPDATE post SET removed=0, timeofremoval=0 WHERE id=?
 """,[whatid])
         g.db.commit()
         flash("The blogpost has now been recovered","message")
@@ -299,10 +304,10 @@ update post set removed=0, timeofremoval=0 where id=?
 
     elif what == "comment":
         blogpost = query_db("""
-select commentpage from comment where id=?
+SELECT commentpage FROM comment WHERE id=?
 """,[whatid],True)
         g.db.execute("""
-update comment set removed=0 where id=?
+UPDATE comment SET removed=0 WHERE id=?
 """,[whatid])
         g.db.commit()
         flash("The comment has now been recovered","message")
@@ -315,7 +320,7 @@ update comment set removed=0 where id=?
 
     elif what == "draft":
         g.db.execute("""
-update draft set removed=0 where id=?
+UPDATE draft SET removed=0 WHERE id=?
 """,[whatid])
         g.db.commit()
         flash("Your draft has been recovered","message")
@@ -333,14 +338,14 @@ def editabout():
             return render_template("editabout.html",preview="1",renderedblog=render_bbcode(blogpost),blogpost=blogpost,recover=1)
 
         g.db.execute("""
-update about set text=?, unixtime=?
+UPDATE about SET text=?, unixtime=?
 """,[blogpost,unixtime()])
         g.db.commit()
         flash("You have successfully edited the aboutpage","message")
         return redirect(url_for("about"))
 
     g.orig_about = query_db("""
-select text from about limit 1
+SELECT text FROM about LIMIT 1
 """,(),True)['text']
     return render_template("editabout.html")
 
@@ -349,13 +354,13 @@ def comments_by(ipaddress):
     if not 'logged_in' in session:
         abort(403)
     g.comments = query_db("""
-select c.*, b.title as blogtitle, b.removed as isblogremoved
-from comment as c 
- left outer join post as b 
-   on b.id=c.commentpage 
-where c.ip=?
-group by c.id 
-order by c.id desc;
+SELECT c.*, b.title AS blogtitle, b.removed AS isblogremoved
+FROM comment AS c 
+ LEFT OUTER JOIN post AS b 
+   ON b.id=c.commentpage 
+WHERE c.ip=?
+GROUP by c.id 
+ORDER by c.id DESC;
 """,[ipaddress])
 
     return render_template("comments_by.html",ipaddress=ipaddress)
@@ -366,16 +371,16 @@ def comments_for(blogpost):
         abort(403)
 
     g.blog = query_db("""
-select title, id from post
-where id=?
-limit 1
+SELECT title, id FROM post
+WHERE id=?
+LIMIT 1
 """,[blogpost])
 
     g.comments = query_db("""
-select *
-from comment
-where commentpage=?
-order by id desc;
+SELECT *
+FROM comment
+WHERE commentpage=?
+ORDER BY id DESC;
 """,[blogpost])
     return render_template("manage_comments_for.html")
 
@@ -454,13 +459,12 @@ WHERE id=?
                 return render_template('editdraft.html',title=title,blogpost=blogpost,recover=1)
             time_var = unixtime()
             g.db.execute("""
-INSERT INTO post (title, text, removed,unixtime) VALUES (?,?,0,?)
+INSERT INTO post (title, text, removed,unixtime,views) VALUES (?,?,0,?,0)
 """,(title,blogpost,time_var))
             g.db.commit()
             blogid = query_db("""SELECT id FROM post WHERE unixtime=?""",[time_var],True)['id']
             g.db.execute("""
-DELETE FROM draft
-WHERE id=?
+DELETE FROM draft WHERE id=?
 """,[draftid])
             g.db.commit()
             flash("You have published a draft","message")

@@ -1,10 +1,5 @@
 $(document).ready(function() {
 
-//    $.ajaxSetup({
-//	cache: false
-  //  });
-
-
     function FormatNumberLength(num, length) {
 	var r = "" + num;
 	while (r.length < length) {
