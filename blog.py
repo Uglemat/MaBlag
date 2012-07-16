@@ -14,7 +14,7 @@ DEBUG    = True
 USERNAME = "admin"
 ADMINNAME = "OBEY!"  # The name which will automatically fill in the nickname in the comment submission
 PASSWORD = "password"
-BLOGS_PER_FRONTPAGE = 25
+BLOGS_PER_FRONTPAGE = 5
 SECRET_KEY= "H8\x93t\xe6\x1c\xd9\x83\xca\x15\xafO\x81\x15\xd9j\xdc'\xa8\x1f\x811@$"
 
 app = Flask(__name__)
@@ -46,7 +46,7 @@ def query_db(query, args=(), one=False,renderbbcode=True):
     if rv and renderbbcode:
         for d in rv:
             if 'text' in d and 'title' in d:
-                d['text'] = render_bbcode(d['text'])
+                d['text'] = render_bbcode(str(d['text']))
     return (rv[0] if rv else None) if one else rv
 
 
@@ -58,14 +58,15 @@ def frontpage():
     else:
         page = int(page)
 
-    g.blogs = query_db("""
+    blogs = query_db("""
   SELECT post.*, COUNT(comment.commentpage) AS comments 
   FROM post LEFT OUTER JOIN comment 
   ON comment.commentpage=post.id AND comment.removed!=1
     WHERE post.removed!=1
   GROUP BY post.id
-  ORDER BY post.id DESC LIMIT ? OFFSET ?; """,[BLOGS_PER_FRONTPAGE,(BLOGS_PER_FRONTPAGE*page)])
-    if len(g.blogs) == BLOGS_PER_FRONTPAGE:
+  ORDER BY post.id DESC LIMIT ? OFFSET ?; """,[BLOGS_PER_FRONTPAGE+1,(BLOGS_PER_FRONTPAGE*page)])
+    g.blogs = blogs[:BLOGS_PER_FRONTPAGE]
+    if len(blogs) == BLOGS_PER_FRONTPAGE+1:
         older_blogs = True
     else:
         older_blogs = False
