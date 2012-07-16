@@ -13,7 +13,8 @@ DATABASE = 'blog.db'
 DEBUG    = True
 USERNAME = "admin"
 ADMINNAME = "OBEY!"  # The name which will automatically fill in the nickname in the comment submission
-PASSWORD = "password"       
+PASSWORD = "password"
+BLOGS_PER_FRONTPAGE = 25
 SECRET_KEY= "H8\x93t\xe6\x1c\xd9\x83\xca\x15\xafO\x81\x15\xd9j\xdc'\xa8\x1f\x811@$"
 
 app = Flask(__name__)
@@ -51,15 +52,25 @@ def query_db(query, args=(), one=False,renderbbcode=True):
 
 @app.route('/')
 def frontpage():
+    page = request.args.get('page')
+    if page == None:
+        page = 0
+    else:
+        page = int(page)
+
     g.blogs = query_db("""
   SELECT post.*, COUNT(comment.commentpage) AS comments 
   FROM post LEFT OUTER JOIN comment 
   ON comment.commentpage=post.id AND comment.removed!=1
     WHERE post.removed!=1
   GROUP BY post.id
-  ORDER BY post.id DESC;
-  """)
-    return render_template("frontpage.html")
+  ORDER BY post.id DESC LIMIT ? OFFSET ?; """,[BLOGS_PER_FRONTPAGE,(BLOGS_PER_FRONTPAGE*page)])
+    if len(g.blogs) == BLOGS_PER_FRONTPAGE:
+        older_blogs = True
+    else:
+        older_blogs = False
+    if len(g.blogs) == 0: abort(404)
+    return render_template("frontpage.html",older_blogs=older_blogs,page=page)
 
 @app.route('/addblog')
 def add_blog():

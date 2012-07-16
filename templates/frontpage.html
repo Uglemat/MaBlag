@@ -28,8 +28,15 @@ Comments ({{ blogpost.comments }})
 
 {% if blogpost.id != g.blogs[-1].id %}
 <hr />
-{% endif %}
+{% else %}
+    {% if older_blogs %}
+    <a href="{{ url_for('frontpage',page=page+1) }}" class="olderentries entrybutton">Older</a>    
+    {% endif %}
 
+    {% if page > 0 %}
+    <a href="{{ url_for('frontpage',page=page-1) }}" class="newerentries entrybutton">Newer</a>    
+    {% endif %}
+{% endif %}
 {% endfor %}
 {% else %}
 <p class="subtle noblogs">There are no blogpost yet for this blog.</p>
