@@ -70,7 +70,8 @@ def frontpage():
         older_blogs = True
     else:
         older_blogs = False
-    if len(g.blogs) == 0: abort(404)
+    if len(g.blogs) == 0 and page > 0:
+        abort(404)
     return render_template("frontpage.html",older_blogs=older_blogs,page=page)
 
 @app.route('/addblog')

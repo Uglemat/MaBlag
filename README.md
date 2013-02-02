@@ -1,3 +1,12 @@
+# MaBlag
+
+Run these commands to get started:
+
+```
+$ sqlite3 blog.db < schema.sql
+$ python blog.py
+```
+
 
 All the files listed in this tree:
 ```
@@ -26,7 +35,7 @@ All the files listed in this tree:
 │   └── manage_comments_for.html
 └── views.py
 ```
-Are under the copyright of Mattias Ugelvik 2012. They are all licensed under the terms of the GNU GPLv3. There should be a copy of the license provided, called "gpl.txt".
+Are under the copyright of Mattias Ugelvik 2012, 2013. They are all licensed under the terms of the GNU GPLv3. There should be a copy of the license provided, called "gpl.txt".
 
 The file: `static/editor.js` is licensed under the GPLv3. More information about that program can be found [here](https://code.google.com/p/sbbeditor/).
 
