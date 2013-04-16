@@ -6,8 +6,7 @@ html {
 font-family: 'Buenard', serif;
 }
 body {
-    background: white url('http://subtlepatterns.com/patterns/white_plaster.png');
-
+    background: white url('/static/white_plaster/white_plaster.png');
 }
 #content {
     background: #eeeeee;
@@ -28,12 +27,12 @@ body {
 }
 
 #footer {
-    width: 900px;
+    width: 920px;
     margin: 0 auto;
     padding: 10px;
 }
 #header {
-    width: 900px;
+    width: 920px;
     margin: 0 auto 28px;
 }
 #footer > #copyright {
@@ -64,6 +63,10 @@ h2 {
     float: right;
     margin-right:0;
 }
+#navbar a:last-child li {
+    margin-right: 0px;
+}
+
 #navbar li {
     display:inline;
     background: #eeeeee;
